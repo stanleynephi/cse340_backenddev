@@ -1,0 +1,71 @@
+<!--this contains the classifications details view for the
+cars users look for.-->
+<% if (title) { %>
+    <h1>
+        <%= title%>
+    </h1>
+    <%- message %>
+
+
+        <form action="/inv/management/add-inventory" method="post" class="inventory_forms">
+
+            <label for="inv_make">
+                Car Make:
+                <input type="text" id="inv_make" name="inv_make" required>
+            </label>
+
+            <label for="inv_model">
+                Car Model:
+                <input type="text" id="inv_model" name="inv_model" required>
+            </label>
+
+            <label for="inv_year">
+                Car Year
+                <input type="text" id="inv_year" name="inv_year" required>
+            </label>
+
+            <label for="inv_description">
+                Car Description:
+                <textarea name="inv_description" id="inv_description"></textarea>
+            </label>
+
+            <label for="inv_image">
+                Car Image URL (Use '/images/vehicles/no-image.jpg') if you dont have an image for the car.
+                <input type="text" id="inv_image" name="inv_image">
+            </label>
+
+            <label for="inv_thumbnail">
+                Car Thumbnail URL (Use '/images/vehicles/no-image-tn.jpg') if you dont have an image for the car.
+                <input type="text" id="inv_thumbnail" name="inv_thumbnail">
+            </label>
+
+            <label for="inv_price">
+                Car Price:
+                <input type="text" id="inv_price" name="inv_price" required>
+            </label>
+
+            <label for="inv_miles">
+                Car Miles
+                <input type="text" id="inv_miles" name="inv_miles">
+            </label>
+
+            <label for="inv_color">
+                Car Color:
+                <input type="text" id="inv_color" name="inv_color">
+            </label>
+
+            <label for="inv_classification">
+                Car Classification:
+                <%- classifications %>
+            </label>
+
+
+            <div>
+                <button type="submit">Add Item</button>
+                <button>
+                    <a href="/inv/management">Back to Management</a>
+                </button>
+            </div>
+        </form>
+
+        <% } else { res.redirect('/') } %>

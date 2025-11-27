@@ -26,7 +26,7 @@ async function getNavigations(req, res, next) {
 async function vehiclesGrid(vehicles) {
   let grid
 
-  if (vehicles.rows || vehicles.rows.lenght > 0) {
+  if (vehicles.rows) {
     grid = '<ul class="grid-display">'
     vehicles.rows.forEach((vehicle) => {
       grid += "<li>"
@@ -110,9 +110,92 @@ async function buildcardetails(details) {
   return information
 }
 
+/**function to build login forms */
+async function login() {
+  let forms = `
+  <form action="/account/login" method="POST" class="login_forms">
+    <label for="email">
+      Email:
+      <input type="email" id="email" name="account_email" required>
+    </label>
+    
+    <label for="password">
+      Password:
+      <input type="password" id="password" name="account_password" required>
+    </label>
+    
+    <div>
+      <button type="submit">Login</button>
+      <button type="button" onclick="window.location.href='/account/register'">Register</button>
+    </div>
+  </form>
+  `
+
+  return forms
+}
+
+async function registration() {
+  let forms = `
+  <form action="/account/register" method="POST" class="registration_forms">
+    <label for="firstname">
+    First Name
+    <input type="text" name="first_name" id="firstname" required/>
+    </label>
+
+    <label for="lastname">
+    Last Name
+    <input type="text" name="last_name" id="lastname" required />
+    </label>
+    
+
+    <label for="email">
+    Email Address
+    <input type="email" name="account_email" id="email"  required />
+    </label>
+    
+
+    <label for="password">
+    Password
+    <span>Passwords must be at least 8 characters and contain at least 1 number, 1 capital letter and 1 special character</span> 
+    <input type="password" name="account_password" id="password" required minlength="8"/>
+    </label>
+    
+
+    <div>
+        <button type="submit">Create Account</button>
+        <button type="button" onclick="window.location.href='/account/login'">Login</button>
+    </div>
+  </form>
+`
+
+  return forms
+}
+
+async function buildclassificationlist(classification_id = null) {
+  let data = await inventoryModel.classificationList()
+  let classificationList =
+    '<select name="classification_id" id="classificationList" class="classificationList"  required>'
+  classificationList += "<option value=''>Choose a Classification</option>"
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"'
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      classificationList += " selected "
+    }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+  return classificationList
+}
+
 module.exports = {
   getNavigations,
   vehiclesGrid,
   handleerrors,
   buildcardetails,
+  login,
+  registration,
+  buildclassificationlist,
 }

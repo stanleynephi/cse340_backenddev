@@ -1,0 +1,19 @@
+<!--this contains the views for the login page-->
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <%- messages() %>
+
+        <% if (error) { %>
+            <ul class="notice">
+                <% error.array().forEach(err=> { %>
+                    <li>
+                        <%= err.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <%- forms %>
+                    <% } else { res.redirect('/') } %>

@@ -13,6 +13,36 @@ const expressLayout = require("express-ejs-layouts")
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventory = require("./routes/inventoryroutes")
+const account = require("./routes/accountroutes")
+const session = require("express-session")
+const bodyparser = require("body-parser")
+
+/**express session setup */
+app.use(
+  session({
+    /**sest up the connect-pg-simple to store the session data */
+    store: new (require("connect-pg-simple")(session))({
+      createTableIfMissing: true,
+      pool,
+    }),
+    /**key to create a session secret */
+    secret: process.env.session_secret,
+    resave: true,
+    saveUninitialized: true,
+    name: "session_ID",
+  })
+)
+
+/**middleware flash message setup */
+app.use(require("connect-flash")())
+app.use(function (req, res, next) {
+  res.locals.messages = require("express-messages")(req, res)
+  next()
+})
+
+/**body parser set up send and receive json data */
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({ extended: true }))
 
 /**ejs view engine set up */
 app.set("view engine", "ejs")
@@ -30,6 +60,8 @@ app.get(
 )
 
 app.use("/inv", require("./utilities/index").handleerrors(inventory))
+
+app.use("/account", require("./utilities/index").handleerrors(account))
 
 /**basic error handling for a 404 page not found*/
 app.use(async (req, res, next) => {

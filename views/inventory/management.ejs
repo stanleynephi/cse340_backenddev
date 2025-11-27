@@ -1,0 +1,32 @@
+<!--this contains the views for the login page-->
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+
+    <%- messages() %>
+
+        <% if (error) { %>
+            <ul class="notice">
+                <% error.array().forEach(err=> { %>
+                    <li>
+                        <%= err.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <!-- ⭐ CLEAN BUTTONS SECTION ⭐ -->
+                <div class="container">
+                    <button onclick="window.location.href='/inv/management/add-classification'">
+                        Add to Classification
+                    </button>
+
+                    <button onclick="window.location.href='/inv/management/add-inventory'">
+                        Add Item to Inventory
+                    </button>
+                </div>
+
+                <% } else { %>
+                    <%= res.redirect('/') %>
+                        <% } %>
