@@ -65,6 +65,7 @@ async function addnewclassification(classification_name) {
     const query = `insert into public.classification(classification_name) values ($1)`
     const result = await pool.query(query, [classification_name])
     console.log("Classification added", result)
+    return result
   } catch (error) {
     console.log(error)
     throw error

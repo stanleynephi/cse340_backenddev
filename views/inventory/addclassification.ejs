@@ -1,28 +1,23 @@
-<!--add to classification -->
-
-<% if (title) { %>
-    <h1>
-        <%= title %>
-    </h1>
-    <p><%- message %></p>
+<!-- Add Classification -->
+<h1>
+    <%= title %>
+</h1>
+<p><%- message %></p>
 
 
+<form action="/inv/management/add-classification" method="post" class="classification_forms">
 
-    <form action="/inv/management/add-classification" method="post" class="classification_forms">
-        <label for="classification">
-            Classification Name:
-            <input type="text" id="classification" name="classification_name" required
-                value="<%= locals.classification_name %>" placeholder="Enter classification name"
-                pattern="^[A-Za-z]{1,50}$" title="Only letters, numbers, and spaces are allowed. Max 50 characters."
-                autocomplete="off">
-        </label>
+    <label for="classification">
+        Classification Name:
+        <input type="text" id="classification" name="classification_name" required
+            placeholder="Enter classification name" pattern="^[A-Za-z0-9 ]{1,50}$"
+            title="Only letters, numbers, and spaces are allowed. Max 50 characters." autocomplete="off">
+    </label>
 
-        <button type="submit">Add Classification</button>
+    <button type="submit">Add Classification</button>
 
-        <button>
-            <a href="/inv/management">Back to Management</a>
-        </button>
-    </form>
+    <a href="/inv/management">
+        <button type="button">Back to Management</button>
+    </a>
 
-    <% } else { res.redirect('/'); } %>
-        <!-- This EJS template allows users to add a new classification to the inventory management system. -->
+</form>

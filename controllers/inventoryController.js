@@ -114,56 +114,51 @@ async function management(req, res, next) {
 /**async function to render the add classification page */
 async function addclassification(req, res, next) {
   try {
+    /**get the navigations */
     const navigation = await utilities.getNavigations()
 
     res.render("./inventory/addclassification", {
-      title: "Add Classification",
+      title: "Add New Classification",
       navigation,
       error: null,
-      message: "Add a classification that does not exist yet ",
+      message: "Add a classification ",
     })
   } catch (error) {
     console.log(error)
-    if (error) {
-      req.flash("error", error)
-      res.render("./inventory/addclassification", {
-        title: "Add New Classification",
-        navigation,
-        error,
-      })
-    }
+    throw error
   }
 }
 
-/**post logic to add new classification. */
+/** post logic to add new classification */
 async function insertnewclassification(req, res, next) {
   try {
+    console.log("Adding Process has started")
+    /**get the navigation and the classification name from the forms */
     const navigation = await utilities.getNavigations()
     const { classification_name } = req.body
-    console.log("This is the new classification name", classification_name)
 
-    /**chec if the classification already exisits */
-    const exists = await inventoryModel.checkclassification(classification_name)
-    console.log(exists.rows)
+    /**pass the classification name to the database */
+    const result = await inventoryModel.addnewclassification(
+      classification_name
+    )
 
-    if (exists.rows.length < 1) {
-      console.log("Classification does not exist")
-      /**insert into the database */
-      const result = await inventoryModel.addnewclassification(
-        classification_name
-      )
-
-      if (result.rowCount > 0) {
-        console.log("Data inserted successfully")
-        req.flash("notice", "Data inserted successfully")
-        res.status(201).redirect("/")
-      } else {
-        req.flash("notice", "error adding new classification")
-        res.status(501).redirect("/inv/management/add-classification")
-      }
+    /**if the result is successful, render the inventory management page */
+    if (result.rows.length > 0) {
+      console.log("Good")
+      req.flash("notice", "Vehicle classification was added successfully.")
+      res.status(201).render("./inventory/management", {
+        title: "Managment Center",
+        navigation,
+        error: null,
+      })
     } else {
-      req.flash("notice", "Classification already exists")
-      res.status(501).redirect("/inv/management")
+      req.flash("error", "Error adding classification to the database")
+      res.status(501).redirect("/inv/management/add-classification", {
+        title: "Managment Center",
+        navigation,
+        message: "Please try again",
+        error: null,
+      })
     }
   } catch (error) {
     console.log(error)

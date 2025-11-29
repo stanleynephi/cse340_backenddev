@@ -20,7 +20,7 @@ validator.validateClassification = () => {
         "Please provide a classification name with at least 3 characters."
       )
       .custom(async (classification_name) => {
-        const existingclassification = await model.checkClassificationExists(
+        const existingclassification = await model.checkclassification(
           classification_name
         )
 
@@ -36,7 +36,7 @@ validator.validateClassification = () => {
 /**functions to check to check the data and return errors if there is any */
 validator.validateClassificationResult = async function (req, res, next) {
   const { classification_name } = req.body
-  let nav = await utilities.getNavigations()
+  let navigation = await utilities.getNavigations()
   let error = []
   error = validationResult(req)
 
@@ -44,7 +44,7 @@ validator.validateClassificationResult = async function (req, res, next) {
   if (!error.isEmpty()) {
     res.render("./inventory/addclassification", {
       title: "Add Classification",
-      nav,
+      navigation,
       message: error.array()[0].msg, // Get the first error message
     })
 
@@ -118,7 +118,7 @@ validator.validateInventoryResult = async function (req, res, next) {
     inv_thumbnail,
     classification_id,
   } = req.body
-  let nav = await utilities.getNavigations()
+  let navigation = await utilities.getNavigations()
   let classifications = await utilities.buildclassificationlist()
   let error = []
   error = validationResult(req)
@@ -128,7 +128,7 @@ validator.validateInventoryResult = async function (req, res, next) {
   if (!error.isEmpty()) {
     res.render("./inventory/addinventory", {
       title: "Add Inventory",
-      nav,
+      navigation,
       message: error.array()[0].msg, // Get the first error message
       classifications,
     })
