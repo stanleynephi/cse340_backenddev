@@ -24,7 +24,7 @@ validator.validateClassification = () => {
           classification_name
         )
 
-        if (existingclassification) {
+        if (existingclassification.rowCount > 0) {
           throw new Error(
             "Classification already exists. Please use a different name."
           )

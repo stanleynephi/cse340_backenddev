@@ -153,12 +153,7 @@ async function insertnewclassification(req, res, next) {
       })
     } else {
       req.flash("error", "Error adding classification to the database")
-      res.status(501).redirect("/inv/management/add-classification", {
-        title: "Managment Center",
-        navigation,
-        message: "Please try again",
-        error: null,
-      })
+      res.status(501).redirect("/inv/management/add-classification")
     }
   } catch (error) {
     console.log(error)
