@@ -17,11 +17,11 @@ router.get(
   )
 )
 router.get(
-  "/detail/:inv_id",
+  "/management/detail/:inv_id",
   require("../utilities/index").handleerrors(controller.getVehicledetailsbyId)
 )
 router.get(
-  "/delete/:inv_id",
+  "management/delete/:inv_id",
   require("../utilities/index").handleerrors(controller.deletevehicle)
 )
 
