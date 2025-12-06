@@ -16,6 +16,8 @@ const inventory = require("./routes/inventoryroutes")
 const account = require("./routes/accountroutes")
 const session = require("express-session")
 const bodyparser = require("body-parser")
+const cookieParser = require("cookie-parser")
+const jwt = require("jsonwebtoken")
 
 /**express session setup */
 app.use(
@@ -43,6 +45,8 @@ app.use(function (req, res, next) {
 /**body parser set up send and receive json data */
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(require("./utilities/logins").checkJWT)
 
 /**ejs view engine set up */
 app.set("view engine", "ejs")

@@ -102,11 +102,46 @@ async function buildcardetails(details) {
         <p><strong>Year:</strong> ${car.inv_year}</p>
       </div>
     </div>
+
+    <button type="button" onclick="window.location.href='/inv/delete/${
+      car.inv_id
+    }'">Delete Car</button>
     `
   } else {
     return "<p>No car details found.</p>"
   }
 
+  return information
+}
+
+/**function to redner the car details before deletion */
+async function buildcardeletionconfirmation(details) {
+  let car = details.rows[0]
+  let information
+
+  if (car) {
+    information = `
+    <div class="car-details">
+      <div class="car-image-container">
+        <img src="${car.inv_image}" alt="Image of ${car.inv_make} ${car.inv_model}" />
+      </div>
+
+      <div class="car-info">
+        <p><strong>Model:</strong> ${car.inv_make} ${car.inv_model}</p>
+      </div>
+    </div>
+
+    <button type="button" onclick="deleteCar(${car.inv_id})">Delete Car</button>
+
+    <script>
+      function deleteCar(id) {
+        fetch('/inv/delete/' + id, { method: 'DELETE' })
+          .then(() => window.location.href = '/')
+          .catch(err => console.error(err));
+      }
+    </script>
+  `
+  }
   return information
 }
 
@@ -198,4 +233,5 @@ module.exports = {
   login,
   registration,
   buildclassificationlist,
+  buildcardeletionconfirmation,
 }

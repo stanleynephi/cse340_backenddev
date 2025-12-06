@@ -72,6 +72,18 @@ async function addnewclassification(classification_name) {
   }
 }
 
+/**async function to delete inventory from the inventory table */
+async function deletevehicle(classification_id) {
+  try {
+    const query = `delete from inventory where inv_id = $1`
+    const value = [classification_id]
+    const data = await pool.query(query, value)
+    return data
+  } catch (error) {
+    new Error("Delete inventory error")
+  }
+}
+
 /**function to register the inventory item */
 async function addnewinventory(
   inv_make,
@@ -116,4 +128,5 @@ module.exports = {
   checkclassification,
   addnewclassification,
   addnewinventory,
+  deletevehicle,
 }

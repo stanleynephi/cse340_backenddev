@@ -1,0 +1,98 @@
+<!-- This view allows clients to update their account info and password -->
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+
+    <!-- Display server messages or validation errors -->
+    <%- message %>
+        <% if (errors && errors.length> 0) { %>
+            <div class="error-container">
+                <ul>
+                    <% errors.forEach(error=> { %>
+                        <li>
+                            <%= error.msg %>
+                        </li>
+                        <% }) %>
+                </ul>
+            </div>
+            <% } %>
+
+                <!-- ========================= -->
+                <!-- ACCOUNT UPDATE FORM -->
+                <!-- ========================= -->
+                <!-- ========================= -->
+                <form action="/account/update" method="POST" id="account-update-form" class="account-update-form">
+                    <fieldset>
+                        <legend>Account Update</legend>
+
+                        <label for="account_firstname">
+                            First Name:
+                            <input type="text" id="account_firstname" name="account_firstname"
+                                value="<%= typeof locals.account_firstname !== 'undefined' ? locals.account_firstname : (account_firstname || '') %>"
+                                required pattern="[A-Za-z\s]+" title="First name should only contain letters.">
+                        </label>
+
+                        <label for="account_lastname">
+                            Last Name:
+                            <input type="text" id="account_lastname" name="account_lastname"
+                                value="<%= typeof locals.account_lastname !== 'undefined' ? locals.account_lastname : (account_lastname || '') %>"
+                                required pattern="[A-Za-z\s]+" title="Last name should only contain letters.">
+                        </label>
+
+                        <label for="account_email">
+                            Email:
+                            <input type="email" id="account_email" name="account_email"
+                                value="<%= typeof locals.account_email !== 'undefined' ? locals.account_email : (account_email || '') %>"
+                                required>
+                        </label>
+
+                        <!-- Hidden field for account ID -->
+                        <input type="hidden" name="account_id"
+                            value="<%= typeof locals.account_id !== 'undefined' ? locals.account_id : (account_id || '') %>">
+
+                        <div class="form-actions">
+                            <button type="submit" name="submit" value="update-account">Update Account</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+
+                <!-- ========================= -->
+                <!-- PASSWORD CHANGE FORM -->
+                <!-- ========================= -->
+                <form action="/account/" method="POST" id="password-change-form" class="password-change-form">
+                    <fieldset>
+                        <legend>Change Password</legend>
+
+                        <p class="form-info">
+                            Enter a new password below to replace your current one.<br>
+                            Passwords must be at least <strong>12 characters</strong> long, and include
+                            one uppercase letter, one lowercase letter, one number, and one special character.
+                        </p>
+
+                        <label for="account_password">
+                            New Password:
+                            <input type="password" id="account_password" name="account_password"
+                                placeholder="Enter new password" required
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$"
+                                title="Must be 12+ characters, include uppercase, lowercase, number, and special character.">
+                        </label>
+
+                        <!-- Hidden field for account ID -->
+                        <input type="hidden" name="account_id" value="<%= locals.account_id || account_id %>">
+
+                        <div class="form-actions">
+                            <button type="submit" name="submit" value="change-password">Change Password</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <div class="back-link">
+                    <a href="/account/">Back to Account Management</a>
+                </div>
+
+                <!-- Include JS file if needed for validation or interactivity -->
+                <script src="/js/accountUpdate.js"></script>
+
+                <% } else { res.redirect('/') } %>

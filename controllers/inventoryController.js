@@ -111,6 +111,49 @@ async function management(req, res, next) {
   }
 }
 
+/**async function to render the delete view */
+async function deletevehicle(req, res, next) {
+  try {
+    const navigation = await utilities.getNavigations()
+    const id = req.params.inv_id
+    const vehicledetails = await inventoryModel.getvehicledatabyid(id)
+    console.log("Here is the vehicle details", vehicledetails)
+    const details = await utilities.buildcardeletionconfirmation(vehicledetails)
+    console.log("Rendered details", details)
+
+    res.render("./inventory/delete", {
+      title: "Delete Vehicle",
+      navigation,
+      error: null,
+      details,
+    })
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+/**async fuction to remove completely */
+async function removevehicles(req, res, next) {
+  try {
+    const id = req.params.inv_id
+    console.log("This is the id of the vehicle to be deleted", id)
+    const deletevehicles = await inventoryModel.deletevehicle(id)
+
+    if (deletevehicles) {
+      req.flash("success", "Vehicle successfully deleted.")
+      res.redirect("/") // redirect to home page
+    } else {
+      req.flash("error", "Vehicle not found. Nothing was deleted.")
+      res.redirect("/")
+    }
+  } catch (error) {
+    req.flash("error", "Something went wrong while deleting the vehicle.")
+    res.redirect("/")
+    next(error)
+  }
+}
+
 /**async function to render the add classification page */
 async function addclassification(req, res, next) {
   try {
@@ -252,4 +295,6 @@ module.exports = {
   addinventory,
   insertnewclassification,
   insertnewinventory,
+  deletevehicle,
+  removevehicles,
 }
