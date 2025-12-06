@@ -21,7 +21,8 @@ router.get(
   require("../utilities/index").handleerrors(controller.getVehicledetailsbyId)
 )
 router.get(
-  "/management/delete/:inv_id",
+  "/delete/:inv_id",
+  require("../utilities/logins").checkemployeeoradmin,
   require("../utilities/index").handleerrors(controller.deletevehicle)
 )
 
